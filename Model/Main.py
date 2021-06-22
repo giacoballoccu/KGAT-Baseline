@@ -4,20 +4,26 @@ Tensorflow Implementation of Knowledge Graph Attention Network (KGAT) model in:
 Wang Xiang et al. KGAT: Knowledge Graph Attention Network for Recommendation. In KDD 2019.
 @author: Xiang Wang (xiangwang@u.nus.edu)
 '''
-import tensorflow as tf
+import numpy as np
+#import tensorflow as tf
 from utility.helper import *
 from utility.batch_test import *
 from time import time
-
+import tensorflow.compat.v1 as tf
 from BPRMF import BPRMF
 from CKE import CKE
 from CFKG import CFKG
 from NFM import NFM
 from KGAT import KGAT
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
 
 
 import os
 import sys
+
+from utility.batch_test import data_generator
+
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 def load_pretrained_data(args):
@@ -35,6 +41,10 @@ def load_pretrained_data(args):
 
 if __name__ == '__main__':
     # get argument settings.
+    tf.disable_v2_behavior() 
+    config = ConfigProto()
+    config.gpu_options.allow_growth = True
+    session = InteractiveSession(config=config)
     tf.set_random_seed(2019)
     np.random.seed(2019)
     args = parse_args()
